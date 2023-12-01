@@ -7,6 +7,7 @@ const asyncHandler = require("express-async-handler");
 const bcrypt = require("bcrypt");
 const { secretKey } = require("../serverConstant");
 const jwt = require("jsonwebtoken");
+
 userRouter.post("/signup", async (req, res) => {
   console.log("----", req.body);
   let { firstName, lastName, email, city, password, confirmPassword, imagePublicId } =
