@@ -19,14 +19,18 @@ chatRouter.get('/:userId', protect, async(req, res) => {
 })
 
 chatRouter.post("/:firstUser/:secondUser", protect, async(req, res) => {
-    
-    
-    const {firstUser, secondUser} = req.params;
-    const newChat = new Chat({
+
+  
+     const {firstUser, secondUser} = req.params;
+     console.log(firstUser, secondUser);
+    const newChat1 = new Chat({
         firstUser, 
         secondUser
     })
-    await newChat.save();
+    
+
+    await newChat1.save();
+    const newChat = await   Chat.findById(newChat1._id).populate("firstUser").populate("secondUser");
     res.json(newChat);
 })
 
@@ -34,7 +38,6 @@ chatRouter.post("/message/:chat/:sender/:receiver", protect, async(req, res) => 
     const {chat, sender, receiver} = req.params;  console.log("dsad")
     const {value} = req.body;
     const deleted = await Message.deleteMany({});
-    console.log(deleted);
     const newMessage = Message({
         chat, sender, receiver,value
     });
@@ -46,10 +49,8 @@ chatRouter.post("/message/:chat/:sender/:receiver", protect, async(req, res) => 
 })
 
 chatRouter.get("/message/:chat",protect, async(req, res) => {
-    console.log("dsadsa")
     const {chat} = req.params;
     const chat1 = await Chat.findById(chat)
-    console.log("---", chat1);
     const messages = await Message.find({chat: chat}).populate({
         path: 'chat',
         populate: {

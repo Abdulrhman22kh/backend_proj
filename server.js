@@ -49,7 +49,6 @@ io.on('connection', (socket) => {
     })
 
     socket.on("send_message", (data) => {
-        console.log('user send this', data.message)
         socket.to(data.room).emit("receive_message", data.message);
     })
 

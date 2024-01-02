@@ -10,7 +10,7 @@ const jwt = require("jsonwebtoken");
 
 userRouter.post("/signup", async (req, res) => {
   console.log("----", req.body);
-  let { firstName, lastName, email, city, password, confirmPassword, imagePublicId } =
+  let { firstName, lastName, email, city, password, confirmPassword, imagePublicId, phoneNumber } =
     req.body;
 
   if (
@@ -46,10 +46,9 @@ userRouter.post("/signup", async (req, res) => {
     email,
     city,
     password,
-    imagePublicId
+    imagePublicId,
+    phoneNumber
   });
-
-  console.log(newUser);
 
   await newUser.save();
   const token = jwt.sign({ username: newUser.userName }, secretKey, {
