@@ -40,7 +40,6 @@ userRouter.post("/signup", async (req, res) => {
   password = hashedPassword;
 
   const newUser = new User({
-    userName: firstName + lastName,
     firstName,
     lastName,
     email,
@@ -51,7 +50,7 @@ userRouter.post("/signup", async (req, res) => {
   });
 
   await newUser.save();
-  const token = jwt.sign({ username: newUser.userName }, secretKey, {
+  const token = jwt.sign({ email: newUser.email }, secretKey, {
     expiresIn: "5h",
   });
   newUser.token = token;
@@ -75,7 +74,7 @@ userRouter.post("/signin", async (req, res) => {
   }
 
   // Generate a JWT
-  const token = jwt.sign({ username: user.userName }, secretKey, {
+  const token = jwt.sign({ email: user.email }, secretKey, {
     expiresIn: "5h",
   });
   res.json({ user: { ...user._doc, token } });

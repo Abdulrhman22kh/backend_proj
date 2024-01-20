@@ -20,11 +20,6 @@ const userSchema = new Schema({
     type: String,
     required: true,
   },
-  userName: {
-    type: String,
-    required: true,
-    unique: true,
-  },
   imagePublicId: {
     type: String,
     required: true,
