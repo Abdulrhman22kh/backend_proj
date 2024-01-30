@@ -11,7 +11,7 @@ const { Server } = require("socket.io");
 const dbUrI =
   "mongodb+srv://moodghoz:cGocmiQKmguaoP4q@cluster0.uojnwjd.mongodb.net/";
 
-mongoose.connect(dbUrI).then(() => {
+mongoose.connect(dbUrI).then(() => {  
   console.log("successfully connected");
 });
 
@@ -19,12 +19,7 @@ app.use(express.json());
 app.use(cors());
 app.use(express.urlencoded({ extended: false }));
 
-app.get(
-  "/dod",
-  asyncHandler(async (req, res) => {
-    res.status(400).json({ m: "haha" });
-  })
-);
+
 app.use("/", userRouter);
 app.use("/chat", chatRouter);
 app.use('/item', itemRouter)

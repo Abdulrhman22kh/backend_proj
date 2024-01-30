@@ -2,6 +2,7 @@ const express = require("express");
 const itemRouter = express.Router();
 const Item = require("../models/item");
 const Image = require("../models/image");
+
 itemRouter.post("/:user", async (req, res) => {
   const { city, region, price, type, images, mainImage, description } =
     req.body;
@@ -38,6 +39,8 @@ itemRouter.post("/:user", async (req, res) => {
 
   res.json(item);
 });
+
+
 
 itemRouter.get("/", async (req, res) => {
   const items = await Item.find({}).populate("user");

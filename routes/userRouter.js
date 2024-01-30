@@ -50,6 +50,7 @@ userRouter.post("/signup", async (req, res) => {
   });
 
   await newUser.save();
+
   const token = jwt.sign({ email: newUser.email }, secretKey, {
     expiresIn: "5h",
   });
@@ -81,7 +82,6 @@ userRouter.post("/signin", async (req, res) => {
 });
 
 userRouter.get("/user", async (req, res) => {
-  const { id } = req.params;
   const users = await User.find({});
   res.json(users);
 });
