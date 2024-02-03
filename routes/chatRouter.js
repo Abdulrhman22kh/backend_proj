@@ -4,7 +4,7 @@ const chatRouter = express.Router();
 const Chat = require("../models/chat");
 const Message = require("../models/message");
 const { protect } = require("../middleware/protect");
-
+// get chats by user id
 chatRouter.get("/:userId", protect, async (req, res) => {
   const { userId } = req.params;
   const chats = await Chat.find({
@@ -12,10 +12,11 @@ chatRouter.get("/:userId", protect, async (req, res) => {
   })
     .populate("firstUser")
     .populate("secondUser");
-
+    console.log(chats);
   res.json(chats);
 });
 
+// create new chat between tow users
 chatRouter.post("/:firstUser/:secondUser", protect, async (req, res) => {
   const { firstUser, secondUser } = req.params;
   console.log(firstUser, secondUser);
@@ -30,7 +31,7 @@ chatRouter.post("/:firstUser/:secondUser", protect, async (req, res) => {
     .populate("secondUser");
   res.json(newChat);
 });
-
+// send message in chats
 chatRouter.post(
   "/message/:chat/:sender/:receiver",
   protect,
@@ -51,6 +52,7 @@ chatRouter.post(
   }
 );
 
+// get all meesages by chat id
 chatRouter.get("/message/:chat", protect, async (req, res) => {
   const { chat } = req.params;
   const messages = await Message.find({ chat: chat })

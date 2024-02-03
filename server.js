@@ -3,7 +3,6 @@ const mongoose = require("mongoose");
 const userRouter = require("./routes/userRouter");
 const chatRouter = require("./routes/chatRouter");
 const itemRouter = require('./routes/itemRouter')
-const asyncHandler = require("express-async-handler");
 const cors = require("cors");
 const app = express();
 

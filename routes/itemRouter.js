@@ -3,6 +3,7 @@ const itemRouter = express.Router();
 const Item = require("../models/item");
 const Image = require("../models/image");
 
+// create item
 itemRouter.post("/:user", async (req, res) => {
   const { city, region, price, type, images, mainImage, description } =
     req.body;
@@ -41,18 +42,20 @@ itemRouter.post("/:user", async (req, res) => {
 });
 
 
-
+// get all items
 itemRouter.get("/", async (req, res) => {
   const items = await Item.find({}).populate("user");
   res.json(items);
 });
 
+// get items by user
 itemRouter.get("/user/:userId", async (req, res) => {
   const { userId } = req.params;
   const items = await Item.find({ user: userId });
   res.json(items);
 });
 
+//get item by item id
 itemRouter.get("/:itemId", async (req, res) => {
   const { itemId } = req.params;
   const item = await Item.findById(itemId).populate("user");
@@ -60,6 +63,7 @@ itemRouter.get("/:itemId", async (req, res) => {
   res.json({ item, images });
 });
 
+// update item
 itemRouter.put("/:itemId", async (req, res) => {
   const { itemId } = req.params;
   const { newItem } = req.body;
@@ -79,6 +83,7 @@ itemRouter.put("/:itemId", async (req, res) => {
   res.json(updatedItem);
 });
 
+// delete item
 itemRouter.delete("/:itemId", async (req, res) => {
   const { itemId } = req.params;
   const DeletedItem = await Item.findByIdAndDelete(itemId);

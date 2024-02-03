@@ -3,16 +3,15 @@ const express = require("express");
 const userRouter = express.Router();
 
 const User = require("../models/user");
-const asyncHandler = require("express-async-handler");
+
 const bcrypt = require("bcrypt");
 const { secretKey } = require("../serverConstant");
 const jwt = require("jsonwebtoken");
 
+//register user
 userRouter.post("/signup", async (req, res) => {
-  console.log("----", req.body);
   let { firstName, lastName, email, city, password, confirmPassword, imagePublicId, phoneNumber } =
     req.body;
-
   if (
     !firstName ||
     !lastName ||
@@ -22,17 +21,17 @@ userRouter.post("/signup", async (req, res) => {
     !confirmPassword ||
     !imagePublicId
   ) {
-    res.status(400).json({ message: "please fill all fields" });
+    return res.status(404).json({ message: "please fill all fields" });
   }
 
   if (password !== confirmPassword) {
-    res.status(400).json({ message: "please check password confirmation" });
+    return res.status(404).json({ message: "please check password confirmation" });
   }
 
   const userChecked = await User.findOne({ email: email });
   console.log("++++", userChecked);
   if (userChecked) {
-    res.status(400).json({ message: "email already used" });
+    return res.status(404).json({ message: "email already used" });
   }
 
   let hashedPassword = await bcrypt.hashSync(password, 10);
@@ -59,6 +58,7 @@ userRouter.post("/signup", async (req, res) => {
   res.json({ user: { ...newUser._doc, token } });
 });
 
+// log in
 userRouter.post("/signin", async (req, res) => {
   const { email, password } = req.body;
   console.log(email);
@@ -81,17 +81,20 @@ userRouter.post("/signin", async (req, res) => {
   res.json({ user: { ...user._doc, token } });
 });
 
+// get all users
 userRouter.get("/user", async (req, res) => {
   const users = await User.find({});
   res.json(users);
 });
 
+//get user by id
 userRouter.get("/user/:id", async (req, res) => {
   const { id } = req.params;
   const user = await User.findById(id);
   res.json(user);
 });
 
+// delete user by id
 userRouter.delete("/user/:id", async (req, res) => {
   const { id } = req.params;
   const user = await User.findByIdAndDelete(id);
